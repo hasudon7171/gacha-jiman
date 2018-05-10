@@ -24,4 +24,44 @@ class UploadController extends Controller
     {
         return view('upload');
     }
+    
+    // 画像アップロード
+    public function store(Request $request) {
+        
+        $this->validate($request, [
+            'file' => [
+                'required',
+                'image',
+            ]
+        ]);
+        
+        if($request->file('file')->isValid([])) {
+            $filename = $request->file->store('/public/images');
+            $message  = $request->get('message');
+            
+            $image = new Image;
+            
+            if(auth()->id()) {
+                $user_id = auth()->id();
+            }
+            else {
+                $user_id = '000000';
+            }
+            $image->user_id   = $user_id;
+            $image->path      = basename($filename);
+            //$image->message = $message;
+            
+            $image->save();
+            
+            return redirect('/upload')->with('message', 'アップロードしました。');
+        }
+        else {
+            return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors(['file' => '画像がアップロードされていないか不正なデータです。']);
+        }
+        
+        return view('/upload');
+    }
 }

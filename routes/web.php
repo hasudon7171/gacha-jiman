@@ -23,3 +23,8 @@ Route::get('/image',  'ImageController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// 画像アップロード
+Route::post('/upload/exec', [
+    'uses'  => 'UploadController@store',
+]);
