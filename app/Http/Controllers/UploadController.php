@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use App\Image;
 use Illuminate\Http\Request;
 
 class UploadController extends Controller
@@ -38,6 +40,7 @@ class UploadController extends Controller
         if($request->file('file')->isValid([])) {
             $filename = $request->file->store('/public/images');
             $message  = $request->get('message');
+            $cost  = $request->get('cost');
             
             $image = new Image;
             
@@ -49,7 +52,7 @@ class UploadController extends Controller
             }
             $image->user_id   = $user_id;
             $image->path      = basename($filename);
-            //$image->message = $message;
+            $image->cost      = intval($cost);
             
             $image->save();
             

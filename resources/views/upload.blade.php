@@ -5,9 +5,14 @@
       
     {!! Form::open(['url' => '/upload/exec', 'method' => 'post', 'files' => true]) !!}
     <div class="form-group">
-    
-    {!! Form::label('file', 'image upload', ['class' => 'control-label']) !!}
-    {!! Form::file('file') !!}
+        <div class="image">
+            {!! Form::label('file', 'アップロードする画像', ['class' => 'control-label']) !!}
+            {!! Form::file('file') !!}
+        </div>
+        <div class="cost">
+            {!! Form::label('file', '投資金額', ['class' => 'control-label']) !!}
+            {!! Form::text('cost', '0') !!}円
+        </div>
     </div>
 
     <div class="form-group">
