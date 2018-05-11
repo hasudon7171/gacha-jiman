@@ -1,6 +1,12 @@
   <div style="margin-top: 10px; text-align: center;"><h1>アップロード</h1></div>
-    @if (session('message') )
-          <div class="alert alert-success">{{ session('message') }}</div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
       
     {!! Form::open(['url' => '/upload/exec', 'method' => 'post', 'files' => true]) !!}

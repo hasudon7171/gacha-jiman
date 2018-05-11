@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use App\Image;
+
 use Illuminate\Http\Request;
 
 class ListController extends Controller
@@ -22,6 +25,9 @@ class ListController extends Controller
      */
     public function index()
     {
-        return view('list');
+        $photo_list = Image::orderBy('updated_at', 'desc')->get();
+        $user_info  = \Auth::user();
+        
+        return view('/list', compact('photo_list', 'user_info'));
     }
 }

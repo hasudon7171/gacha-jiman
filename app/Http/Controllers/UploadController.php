@@ -30,17 +30,15 @@ class UploadController extends Controller
     // 画像アップロード
     public function store(Request $request) {
         
-        $this->validate($request, [
-            'file' => [
-                'required',
-                'image',
-            ]
+        $request->validate([
+        'file' => 'required|image',
+        'cost' => 'numeric',
         ]);
         
         if($request->file('file')->isValid([])) {
             $filename = $request->file->store('/public/images');
             $message  = $request->get('message');
-            $cost  = $request->get('cost');
+            $cost     = $request->get('cost');
             
             $image = new Image;
             
@@ -51,7 +49,8 @@ class UploadController extends Controller
                 $user_id = '000000';
             }
             $image->user_id   = $user_id;
-            $image->path      = basename($filename);
+            $image->name      = basename($filename);
+            $image->path      = $filename;
             $image->cost      = intval($cost);
             
             $image->save();
