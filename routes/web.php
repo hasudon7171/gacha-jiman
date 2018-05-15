@@ -22,12 +22,19 @@ Route::get('/image',  'ImageController@index');
 
 Auth::routes();
 
+// ログイン後トップ
 Route::get('/home', 'HomeController@index')->name('home');
+
 // 画像詳細
 Route::get('detail', [
     'uses'  => 'ImageController@detail',
 ]);
 // 画像アップロード
-Route::post('/upload/exec', [
+Route::post('/detail/store', [
     'uses'  => 'UploadController@store',
+]);
+
+// 画像アップロード
+Route::post('/detail/edit', [
+    'uses'  => 'ImageController@edit',
 ]);

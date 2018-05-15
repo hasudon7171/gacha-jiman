@@ -17,7 +17,7 @@ class Image extends Model
     
     static public function getPhoto($id) {
         
-        return DB::select('select * from images where id = ?', [$id]);
-        
+        $image_info = DB::select('select * from images where id = ?', [$id]);
+        return reset($image_info);
     }
 }
