@@ -8,11 +8,6 @@ use App\MySelfComment;
 
 use Illuminate\Http\Request;
 
-define('MEMBER_UPLOAD_MAX',     5);
-define('CAN_UPLOAD',               0);  // アップロード可能
-define('CAN_NOT_UPLOAD_NONACTIVE',  1); // アップロード不可：非会員アップロード上限超過
-define('CAN_NOT_UPLOAD_ACTIVE',     2); // アップロード不可：会員アップロード上限超過
-
 class UploadController extends Controller
 {
     /**
@@ -47,7 +42,7 @@ class UploadController extends Controller
         $is_upload = $this->get_is_upload();
                 
         if($is_upload == UPLOAD_ERROR_ACTIVE) {
-            return redirect('/upload')->with('message', MEMBER_UPLOAD_MAX.'枚以上アップロードできません。プレミアムメンバー登録をしてください。');
+            return redirect('/upload')->with('message', config('const.MEMBER_UPLOAD_MAX').'枚以上アップロードできません。プレミアムメンバー登録をしてください。');
         }
         elseif($is_upload == UPLOAD_ERROR_NONACTIVE) {
             return redirect('/upload')->with('message', '本日はアップロードできません。会員登録をしてください。');
@@ -102,15 +97,15 @@ class UploadController extends Controller
     private function get_is_upload() {
         
         $user_info = \Auth::user();
-        $is_upload = CAN_UPLOAD;
+        $is_upload = config('const.CAN_UPLOAD');
         
         if($user_info) {
             $user_id   = $user_info->id;
         
-            if($user_info->status == STATUS_MEMBER) {
+            if($user_info->status == config('const.MEMBER_STATUS_MEMBER')) {
                 $count = Image::where('$user_id', $user_id)->count();
-                if($count > MEMBER_UPLOAD_MAX) {
-                    $is_upload = CAN_NOT_UPLOAD_ACTIVE;
+                if($count > config('const.MEMBER_UPLOAD_MAX')) {
+                    $is_upload = config('const.CAN_NOT_UPLOAD_MEMBER');
                 }
             }
         }
@@ -119,7 +114,7 @@ class UploadController extends Controller
             
             $nonactive_upload = \DB::select('select * from images where user_id = ?', [$user_id]);
             if($nonactive_upload) {
-                $is_upload = CAN_NOT_UPLOAD_NONACTIVE;
+                $is_upload =  config('const.CAN_NOT_UPLOAD_NON_MEMBER');
             }
         }
         

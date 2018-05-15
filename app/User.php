@@ -5,10 +5,6 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-define('STATUS_NON_MEMBER', 0);
-define('STATUS_MEMBER',     1);
-define('STATUS_PREMIUM',    2);
-
 class User extends Authenticatable
 {
     use Notifiable;
